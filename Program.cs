@@ -14,6 +14,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthService, AuthService.Services.AuthService>();
 builder.Services.AddControllers();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy
+                .WithOrigins(
+                    "http://192.168.100.109:8081",
+                    "http://localhost:8081",
+                    "http://localhost:3000",
+                    "http://localhost:3001",
+                    "http://localhost:5174",
+                    "http://localhost:5172")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                ;
+        });
+});
+
+
 builder.Configuration.AddEnvironmentVariables();
 
 
@@ -30,10 +52,6 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 
-/*
-builder.Services.AddDbContext<AuthDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-    */
 
 builder.Services.AddDbContext<AuthDbContext>(
     options =>
@@ -55,13 +73,12 @@ builder.Logging.AddConsole();
 builder.Services.AddDbContext<AuthDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.EnableSensitiveDataLogging(); // Helpful for debugging
-    options.LogTo(Console.WriteLine); // Log queries to the console
+    options.EnableSensitiveDataLogging(); 
+    options.LogTo(Console.WriteLine); 
 });
 
 
 var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
-//var key = Encoding.UTF8.GetBytes(secret);
 var jwtSecret = builder.Configuration["JwtSettings:Secret"];
 if (string.IsNullOrEmpty(jwtSecret) || jwtSecret.Length < 16)
 {
@@ -72,7 +89,7 @@ var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
 
 Console.WriteLine(secret);
 
-// Configure JWT authentication
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -111,6 +128,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
 
