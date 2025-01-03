@@ -1,0 +1,52 @@
+# Ignore build output
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Visual Studio specific
+.vs/
+.vscode/
+
+# Rider specific
+.idea/
+*.sln.iml
+
+# Dependency directories
+node_modules/
+packages/
+
+# OS-specific files
+Thumbs.db
+.DS_Store
+*.swp
+*.swo
+
+# Environment and configuration files
+appsettings.json
+appsettings.*.json
+.env
+
+# Publish output
+publish/
+wwwroot/
+dist/
+
+# Resharper specific
+_ReSharper*/
+*.DotSettings.user
+
+# Other files
+*.bak
+*.temp
+*.tmp
+*.pid
