@@ -1,0 +1,191 @@
+2025-01-03 13:21:29.603 +01:00 [INF] User profile is available. Using 'C:\Users\Knut Edvard Kjersem\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 13:21:29.678 +01:00 [INF] Now listening on: http://localhost:5020
+2025-01-03 13:21:29.680 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 13:21:29.681 +01:00 [INF] Hosting environment: Development
+2025-01-03 13:21:29.682 +01:00 [INF] Content root path: C:\Users\Knut Edvard Kjersem\RiderProjects\authservice
+2025-01-03 13:21:36.979 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/register - application/json 91
+2025-01-03 13:21:37.012 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-01-03 13:21:37.015 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/register - 404 0 null 41.5957ms
+2025-01-03 13:21:37.020 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5020/api/Auth/register, Response status code: 404
+2025-01-03 13:21:40.984 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 47
+2025-01-03 13:21:40.988 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 404 0 null 3.891ms
+2025-01-03 13:21:40.990 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5020/api/Auth/login, Response status code: 404
+2025-01-03 13:21:42.464 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 47
+2025-01-03 13:21:42.468 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 404 0 null 4.4186ms
+2025-01-03 13:21:42.471 +01:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5020/api/Auth/login, Response status code: 404
+2025-01-03 13:22:03.036 +01:00 [INF] Application is shutting down...
+2025-01-03 13:22:05.767 +01:00 [INF] User profile is available. Using 'C:\Users\Knut Edvard Kjersem\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 13:22:05.838 +01:00 [INF] Now listening on: http://localhost:5020
+2025-01-03 13:22:05.841 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 13:22:05.842 +01:00 [INF] Hosting environment: Development
+2025-01-03 13:22:05.843 +01:00 [INF] Content root path: C:\Users\Knut Edvard Kjersem\RiderProjects\authservice
+2025-01-03 13:22:05.963 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5020/swagger/index.html - null null
+2025-01-03 13:22:06.052 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5020/swagger/index.html - 200 null text/html;charset=utf-8 89.6136ms
+2025-01-03 13:22:06.184 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5020/swagger/v1/swagger.json - null null
+2025-01-03 13:22:06.239 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5020/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 55.3616ms
+2025-01-03 13:22:09.112 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/register - application/json 91
+2025-01-03 13:22:09.120 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-01-03 13:22:09.124 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:22:09.148 +01:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(AuthService.DTOs.RegisterDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:22:10.189 +01:00 [INF] Executed DbCommand (28ms) [Parameters=[@__dto_Email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."Email" = @__dto_Email_0)
+2025-01-03 13:22:10.485 +01:00 [INF] Executed DbCommand (8ms) [Parameters=[@p0='?', @p1='?', @p2='?', @p3='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Email", "PasswordHash", "Role", "Username")
+VALUES (@p0, @p1, @p2, @p3)
+RETURNING "Id";
+2025-01-03 13:22:10.502 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:22:10.513 +01:00 [INF] Executed action AuthService.Controller.AuthController.Register (AuthService) in 1361.3503ms
+2025-01-03 13:22:10.514 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:22:10.520 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/register - 200 null application/json; charset=utf-8 1407.9789ms
+2025-01-03 13:30:31.493 +01:00 [INF] Application is shutting down...
+2025-01-03 13:30:34.310 +01:00 [INF] User profile is available. Using 'C:\Users\Knut Edvard Kjersem\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 13:30:34.382 +01:00 [INF] Now listening on: http://localhost:5020
+2025-01-03 13:30:34.385 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 13:30:34.386 +01:00 [INF] Hosting environment: Development
+2025-01-03 13:30:34.386 +01:00 [INF] Content root path: C:\Users\Knut Edvard Kjersem\RiderProjects\authservice
+2025-01-03 13:30:38.960 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5020/swagger/index.html - null null
+2025-01-03 13:30:39.037 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5020/swagger/index.html - 200 null text/html;charset=utf-8 76.8213ms
+2025-01-03 13:30:39.095 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5020/swagger/v1/swagger.json - null null
+2025-01-03 13:30:39.157 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5020/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 62.2243ms
+2025-01-03 13:30:42.248 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/register - application/json 101
+2025-01-03 13:30:42.257 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-01-03 13:30:42.259 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:30:42.277 +01:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(AuthService.DTOs.RegisterDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:30:42.969 +01:00 [INF] Executed DbCommand (34ms) [Parameters=[@__dto_Username_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."Username" = @__dto_Username_0)
+2025-01-03 13:30:42.985 +01:00 [WRN] Registration failed: Username string already exists.
+2025-01-03 13:30:42.986 +01:00 [ERR] Error during registration for email: user@example.com
+System.Exception: Username already exists.
+   at AuthService.Services.AuthService.RegisterAsync(RegisterDto dto) in C:\Users\Knut Edvard Kjersem\RiderProjects\authservice\Services\AuthService.cs:line 33
+   at AuthService.Controller.AuthController.Register(RegisterDto dto) in C:\Users\Knut Edvard Kjersem\RiderProjects\authservice\Controller\AuthController.cs:line 32
+2025-01-03 13:30:43.004 +01:00 [INF] Executing BadRequestObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:30:43.015 +01:00 [INF] Executed action AuthService.Controller.AuthController.Register (AuthService) in 734.8294ms
+2025-01-03 13:30:43.016 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:30:43.023 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/register - 400 null application/json; charset=utf-8 774.5265ms
+2025-01-03 13:30:46.557 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/register - application/json 102
+2025-01-03 13:30:46.560 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:30:46.561 +01:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(AuthService.DTOs.RegisterDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:30:46.579 +01:00 [INF] Executed DbCommand (3ms) [Parameters=[@__dto_Username_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."Username" = @__dto_Username_0)
+2025-01-03 13:30:46.581 +01:00 [WRN] Registration failed: Password does not meet complexity requirements.
+2025-01-03 13:30:46.582 +01:00 [ERR] Error during registration for email: user@example.com
+System.Exception: Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.
+   at AuthService.Services.AuthService.RegisterAsync(RegisterDto dto) in C:\Users\Knut Edvard Kjersem\RiderProjects\authservice\Services\AuthService.cs:line 39
+   at AuthService.Controller.AuthController.Register(RegisterDto dto) in C:\Users\Knut Edvard Kjersem\RiderProjects\authservice\Controller\AuthController.cs:line 32
+2025-01-03 13:30:46.584 +01:00 [INF] Executing BadRequestObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:30:46.585 +01:00 [INF] Executed action AuthService.Controller.AuthController.Register (AuthService) in 21.5801ms
+2025-01-03 13:30:46.586 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:30:46.587 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/register - 400 null application/json; charset=utf-8 29.5806ms
+2025-01-03 13:31:41.088 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 59
+2025-01-03 13:31:41.090 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:31:41.096 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(AuthService.DTOs.LoginDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:31:41.103 +01:00 [INF] Executing UnauthorizedObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:31:41.104 +01:00 [INF] Executed action AuthService.Controller.AuthController.Login (AuthService) in 6.6426ms
+2025-01-03 13:31:41.105 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:31:41.106 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 401 null application/json; charset=utf-8 18.4994ms
+2025-01-03 13:31:46.934 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 59
+2025-01-03 13:31:46.936 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:31:46.937 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(AuthService.DTOs.LoginDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:31:46.939 +01:00 [INF] Executing UnauthorizedObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:31:46.940 +01:00 [INF] Executed action AuthService.Controller.AuthController.Login (AuthService) in 1.8517ms
+2025-01-03 13:31:46.941 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:31:46.942 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 401 null application/json; charset=utf-8 8.6475ms
+2025-01-03 13:33:26.979 +01:00 [INF] Application is shutting down...
+2025-01-03 13:33:29.535 +01:00 [INF] User profile is available. Using 'C:\Users\Knut Edvard Kjersem\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 13:33:29.601 +01:00 [INF] Now listening on: http://localhost:5020
+2025-01-03 13:33:29.604 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 13:33:29.605 +01:00 [INF] Hosting environment: Development
+2025-01-03 13:33:29.605 +01:00 [INF] Content root path: C:\Users\Knut Edvard Kjersem\RiderProjects\authservice
+2025-01-03 13:33:37.295 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5020/swagger/index.html - null null
+2025-01-03 13:33:37.376 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5020/swagger/index.html - 200 null text/html;charset=utf-8 80.0822ms
+2025-01-03 13:33:37.514 +01:00 [INF] Request starting HTTP/1.1 GET http://localhost:5020/swagger/v1/swagger.json - null null
+2025-01-03 13:33:37.570 +01:00 [INF] Request finished HTTP/1.1 GET http://localhost:5020/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 56.1385ms
+2025-01-03 13:33:43.704 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 59
+2025-01-03 13:33:43.712 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-01-03 13:33:43.713 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:33:43.730 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(AuthService.DTOs.LoginDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:33:44.411 +01:00 [INF] Executed DbCommand (28ms) [Parameters=[@__dto_Email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Email", u."PasswordHash", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."Email" = @__dto_Email_0
+LIMIT 2
+2025-01-03 13:33:44.422 +01:00 [WRN] Login failed: User with email user@example.com not found.
+2025-01-03 13:33:44.427 +01:00 [INF] Executing UnauthorizedObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:33:44.438 +01:00 [INF] Executed action AuthService.Controller.AuthController.Login (AuthService) in 705.4877ms
+2025-01-03 13:33:44.439 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:33:44.445 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 401 null application/json; charset=utf-8 741.2028ms
+2025-01-03 13:33:58.368 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/register - application/json 104
+2025-01-03 13:33:58.372 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:33:58.377 +01:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(AuthService.DTOs.RegisterDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:33:58.414 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__dto_Username_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."Username" = @__dto_Username_0)
+2025-01-03 13:33:58.420 +01:00 [WRN] Registration failed: Password does not meet complexity requirements.
+2025-01-03 13:33:58.420 +01:00 [ERR] Error during registration for email: user@example.com
+System.Exception: Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.
+   at AuthService.Services.AuthService.RegisterAsync(RegisterDto dto) in C:\Users\Knut Edvard Kjersem\RiderProjects\authservice\Services\AuthService.cs:line 39
+   at AuthService.Controller.AuthController.Register(RegisterDto dto) in C:\Users\Knut Edvard Kjersem\RiderProjects\authservice\Controller\AuthController.cs:line 32
+2025-01-03 13:33:58.431 +01:00 [INF] Executing BadRequestObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:33:58.433 +01:00 [INF] Executed action AuthService.Controller.AuthController.Register (AuthService) in 54.2389ms
+2025-01-03 13:33:58.434 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:33:58.435 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/register - 400 null application/json; charset=utf-8 66.9254ms
+2025-01-03 13:34:07.059 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/register - application/json 105
+2025-01-03 13:34:07.061 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:34:07.062 +01:00 [INF] Route matched with {action = "Register", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Register(AuthService.DTOs.RegisterDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:34:07.117 +01:00 [INF] Executed DbCommand (5ms) [Parameters=[@__dto_Username_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM "Users" AS u
+    WHERE u."Username" = @__dto_Username_0)
+2025-01-03 13:34:07.444 +01:00 [INF] Executed DbCommand (10ms) [Parameters=[@p0='?', @p1='?', @p2='?', @p3='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "Users" ("Email", "PasswordHash", "Role", "Username")
+VALUES (@p0, @p1, @p2, @p3)
+RETURNING "Id";
+2025-01-03 13:34:07.458 +01:00 [INF] User strinasg registered successfully.
+2025-01-03 13:34:07.459 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:34:07.461 +01:00 [INF] Executed action AuthService.Controller.AuthController.Register (AuthService) in 397.4296ms
+2025-01-03 13:34:07.462 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Register (AuthService)'
+2025-01-03 13:34:07.463 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/register - 200 null application/json; charset=utf-8 404.091ms
+2025-01-03 13:34:23.259 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 60
+2025-01-03 13:34:23.261 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:34:23.262 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(AuthService.DTOs.LoginDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:34:23.269 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__dto_Email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Email", u."PasswordHash", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."Email" = @__dto_Email_0
+LIMIT 2
+2025-01-03 13:34:23.440 +01:00 [INF] Executing UnauthorizedObjectResult, writing value of type '<>f__AnonymousType1`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:34:23.441 +01:00 [INF] Executed action AuthService.Controller.AuthController.Login (AuthService) in 177.8606ms
+2025-01-03 13:34:23.442 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:34:23.443 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 401 null application/json; charset=utf-8 184.3781ms
+2025-01-03 13:35:44.491 +01:00 [INF] Application is shutting down...
+2025-01-03 13:35:47.121 +01:00 [INF] User profile is available. Using 'C:\Users\Knut Edvard Kjersem\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-01-03 13:35:47.184 +01:00 [INF] Now listening on: http://localhost:5020
+2025-01-03 13:35:47.186 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-01-03 13:35:47.187 +01:00 [INF] Hosting environment: Development
+2025-01-03 13:35:47.188 +01:00 [INF] Content root path: C:\Users\Knut Edvard Kjersem\RiderProjects\authservice
+2025-01-03 13:35:49.807 +01:00 [INF] Request starting HTTP/1.1 POST http://localhost:5020/api/Auth/login - application/json 60
+2025-01-03 13:35:49.835 +01:00 [WRN] Failed to determine the https port for redirect.
+2025-01-03 13:35:49.837 +01:00 [INF] Executing endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:35:49.853 +01:00 [INF] Route matched with {action = "Login", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(AuthService.DTOs.LoginDto) on controller AuthService.Controller.AuthController (AuthService).
+2025-01-03 13:35:50.510 +01:00 [INF] Executed DbCommand (27ms) [Parameters=[@__dto_Email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."Id", u."Email", u."PasswordHash", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."Email" = @__dto_Email_0
+LIMIT 2
+2025-01-03 13:35:50.764 +01:00 [INF] User strinasg logged in successfully.
+2025-01-03 13:35:50.769 +01:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType2`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-01-03 13:35:50.786 +01:00 [INF] Executed action AuthService.Controller.AuthController.Login (AuthService) in 929.7085ms
+2025-01-03 13:35:50.788 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
+2025-01-03 13:35:50.795 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 200 null application/json; charset=utf-8 988.9994ms
