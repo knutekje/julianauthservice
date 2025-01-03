@@ -189,3 +189,4 @@ LIMIT 2
 2025-01-03 13:35:50.786 +01:00 [INF] Executed action AuthService.Controller.AuthController.Login (AuthService) in 929.7085ms
 2025-01-03 13:35:50.788 +01:00 [INF] Executed endpoint 'AuthService.Controller.AuthController.Login (AuthService)'
 2025-01-03 13:35:50.795 +01:00 [INF] Request finished HTTP/1.1 POST http://localhost:5020/api/Auth/login - 200 null application/json; charset=utf-8 988.9994ms
+2025-01-03 18:04:14.265 +01:00 [ERR] An error occurred using the connection to database '${DB_NAME}' on server 'tcp://${DB_HOST}:5432'.
