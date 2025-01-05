@@ -1,4 +1,6 @@
-﻿namespace AuthService.DTOs;
+﻿using AuthService.Models;
+
+namespace AuthService.DTOs;
 
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +19,5 @@ public class RegisterDto
     public string Password { get; set; }
 
     [Required]
-    [RegularExpression("^(User|Admin)$", ErrorMessage = "Role must be either 'User' or 'Admin'.")]
-    public string Role { get; set; }
+    public string Role { get; set; } = Roles.Receptionist;
 }

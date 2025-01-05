@@ -26,56 +26,60 @@ public class AuthService : IAuthService
     }
 
     public async Task<string> RegisterAsync(RegisterDto dto)
+{
+    if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
     {
-        // Check if username already exists
-        if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
-        {
-            _logger.LogWarning("Registration failed: Username {Username} already exists.", dto.Username);
-            throw new Exception("Username already exists.");
-        }
-        
-        if (!IsPasswordStrong(dto.Password))
-        {
-            _logger.LogWarning("Registration failed: Password does not meet complexity requirements.");
-            throw new Exception("Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.");
-        }
-        
-        if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
-        {
-            _logger.LogWarning("Registration failed for email {Email}: Email already exists", dto.Email);
-            throw new Exception("User with this email already exists.");
-        }
-
-        // Check if email domain is allowed (example restriction)
-        var allowedDomains = new[] { "example.com", "test.com" };
-        var emailDomain = dto.Email.Split('@').Last();
-        if (!allowedDomains.Contains(emailDomain))
-        {
-            _logger.LogWarning("Registration failed: Email domain {Domain} is not allowed.", emailDomain);
-            throw new Exception("Email domain is not allowed.");
-        }
-
-        // Proceed with user creation
-        var user = new User
-        {
-            Username = dto.Username,
-            Email = dto.Email,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            Role = dto.Role
-        };
-
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-
-        _logger.LogInformation("User {Username} registered successfully.", dto.Username);
-
-        return "Registration successful!";
+        _logger.LogWarning("Registration failed: Username {Username} already exists.", dto.Username);
+        throw new Exception("Username already exists.");
     }
+
+    if (!IsPasswordStrong(dto.Password))
+    {
+        _logger.LogWarning("Registration failed: Password does not meet complexity requirements.");
+        throw new Exception("Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.");
+    }
+
+    if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
+    {
+        _logger.LogWarning("Registration failed for email {Email}: Email already exists.", dto.Email);
+        throw new Exception("User with this email already exists.");
+    }
+
+    var allowedDomains = new[] { "example.com", "test.com" };
+    var emailDomain = dto.Email.Split('@').Last();
+    if (!allowedDomains.Contains(emailDomain))
+    {
+        _logger.LogWarning("Registration failed: Email domain {Domain} is not allowed.", emailDomain);
+        throw new Exception("Email domain is not allowed.");
+    }
+
+    var allowedRoles = new[] { Roles.Admin, Roles.Receptionist, Roles.Housekeeping, Roles.FAndB, Roles.Maintenance };
+    if (!allowedRoles.Contains(dto.Role))
+    {
+        _logger.LogWarning("Registration failed: Role {Role} is invalid.", dto.Role);
+        throw new Exception("Invalid role specified.");
+    }
+
+    var user = new User
+    {
+        Username = dto.Username,
+        Email = dto.Email,
+        PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+        Role = dto.Role
+    };
+
+    _context.Users.Add(user);
+    await _context.SaveChangesAsync();
+
+    _logger.LogInformation("User {Username} registered successfully with role {Role}.", dto.Username, dto.Role);
+
+    return "Registration successful!";
+}
+
 
 
     public async Task<string> LoginAsync(LoginDto dto)
     {
-        // Check if the user exists
         var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
         if (user == null)
         {
@@ -83,14 +87,12 @@ public class AuthService : IAuthService
             throw new Exception("Invalid email or password.");
         }
 
-        // Verify password
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
         {
             _logger.LogWarning("Login failed: Invalid password for email {Email}.", dto.Email);
             throw new Exception("Invalid email or password.");
         }
 
-        // Generate JWT token
         var token = GenerateJwt(user);
         _logger.LogInformation("User {Username} logged in successfully.", user.Username);
 
@@ -98,10 +100,15 @@ public class AuthService : IAuthService
     }
     private string GenerateJwt(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Secret"]));
+        var secret = _config["JwtSettings:Secret"];
+        var issuer = _config["JwtSettings:Issuer"];
+        var audience = _config["JwtSettings:Audience"];
+        var expirationMinutes = int.Parse(_config["JwtSettings:ExpirationMinutes"]);
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
@@ -109,23 +116,25 @@ public class AuthService : IAuthService
         };
 
         var token = new JwtSecurityToken(
-            issuer: _config["JwtSettings:Issuer"],
-            audience: _config["JwtSettings:Audience"],
+            issuer: issuer,
+            audience: audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(int.Parse(_config["JwtSettings:ExpirationMinutes"])),
+            expires: DateTime.UtcNow.AddMinutes(expirationMinutes),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
     
-    public bool IsPasswordStrong(string password)
+    private bool IsPasswordStrong(string password)
     {
-        return password.Length >= 8 &&
-               password.Any(char.IsUpper) &&
-               password.Any(char.IsLower) &&
-               password.Any(char.IsDigit) &&
-               password.Any(ch => "!@#$%^&*()".Contains(ch));
+        var hasUpperCase = password.Any(char.IsUpper);
+        var hasLowerCase = password.Any(char.IsLower);
+        var hasDigit = password.Any(char.IsDigit);
+        var hasSpecialChar = password.Any(ch => !char.IsLetterOrDigit(ch));
+        return password.Length >= 8 && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
     }
+
 
 }
