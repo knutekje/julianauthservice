@@ -33,7 +33,7 @@ jobs:
 
     # Step 5: Build Docker image
     - name: Build Docker image
-      run: docker build -t your-dockerhub-username/authservice:${{ github.sha }} -f AuthService/Dockerfile .
+      run: docker build -t knutekje/authservice:${{ github.sha }} -f AuthService/Dockerfile .
 
     # Step 6: Push Docker image to registry (optional)
     - name: Log in to DockerHub
@@ -42,4 +42,4 @@ jobs:
 
     - name: Push Docker image
       if: success()
-      run: docker push your-dockerhub-username/authservice:${{ github.sha }}
+      run: docker push knutekje/authservice:${{ github.sha }}
