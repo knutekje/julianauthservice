@@ -13,29 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Check out the code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Set up .NET environment
     - name: Set up .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0'
 
-    # Step 3: Restore dependencies
     - name: Restore dependencies
       run: dotnet restore AuthService/AuthService.csproj
 
-    # Step 4: Run unit tests
     - name: Run tests
       run: dotnet test AuthService.Tests/AuthService.Tests.csproj --no-restore --verbosity normal
 
-    # Step 5: Build Docker image
     - name: Build Docker image
       run: docker build -t knutekje/authservice:${{ github.sha }} -f AuthService/Dockerfile .
 
-    # Step 6: Push Docker image to registry (optional)
     - name: Log in to DockerHub
       if: success()
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
