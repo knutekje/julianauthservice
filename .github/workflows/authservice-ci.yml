@@ -25,7 +25,8 @@ jobs:
       run: dotnet restore AuthService/AuthService.csproj
 
     - name: Run tests
-      run: dotnet test AuthService.Tests/AuthService.Tests.csproj --no-restore --verbosity normal
+      run: dotnet test
+      #run: dotnet test AuthService.Tests/AuthService.Tests.csproj --no-restore --verbosity normal
 
     - name: Build Docker image
       run: docker build -t knutekje/authservice:${{ github.sha }} -f AuthService/Dockerfile .
