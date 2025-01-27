@@ -80,23 +80,30 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginDto dto)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
-        if (user == null)
+        try
         {
-            _logger.LogWarning("Login failed: User with email {Email} not found.", dto.Email);
-            throw new Exception("Invalid email or password.");
-        }
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null)
+            {
+                _logger.LogWarning("Login failed: User with email {Email} not found.", dto.Email);
+                throw new Exception("Invalid email or password.");
+            }
 
-        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            {
+                _logger.LogWarning("Login failed: Invalid password for email {Email}.", dto.Email);
+                throw new Exception("Invalid email or password.");
+            }
+
+            var token = GenerateJwt(user);
+            _logger.LogInformation("User {Username} logged in successfully.", user.Username);
+
+            return token;
+        }
+        catch(Exception ex)
         {
-            _logger.LogWarning("Login failed: Invalid password for email {Email}.", dto.Email);
-            throw new Exception("Invalid email or password.");
+            return "Login failed. " + ex.Message;
         }
-
-        var token = GenerateJwt(user);
-        _logger.LogInformation("User {Username} logged in successfully.", user.Username);
-
-        return token;
     }
     private string GenerateJwt(User user)
     {
