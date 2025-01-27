@@ -6,46 +6,53 @@ using AuthService.DTOs;
 using AuthService.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using AuthService.Services;
-using AuthService.Data;
-using AuthService.DTOs;
-using AuthService.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
-public class AuthServiceTests
+public class AuthServiceTests : IAsyncLifetime
 {
-    private readonly AuthDbContext _context;
-    private readonly Mock<IConfiguration> _mockConfig;
-    private readonly Mock<ILogger<AuthService>> _mockLogger;
-    private readonly AuthService _authService;
+    private AuthDbContext _context;
+    private Mock<IConfiguration> _mockConfig;
+    private Mock<ILogger<AuthService>> _mockLogger;
+    private AuthService _authService;
 
-    public AuthServiceTests()
+    public async Task InitializeAsync()
     {
+        // Initialize InMemory database
         var options = new DbContextOptionsBuilder<AuthDbContext>()
-            .UseInMemoryDatabase(databaseName: "AuthServiceTestDb")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
         _context = new AuthDbContext(options);
 
+        // Mock configuration
         _mockConfig = new Mock<IConfiguration>();
-        _mockConfig.Setup(c => c["JwtSettings:Secret"]).Returns("TestSecrdfgdfgdfgd32453245adfgadfgasdrfgdfgasdfgadfgdgetKey1234567890");
-        _mockConfig.Setup(c => c["JwtSettings:Issuer"]).Returns("TestIssuer");
-        _mockConfig.Setup(c => c["JwtSettings:Audience"]).Returns("TestAudience");
-        _mockConfig.Setup(c => c["JwtSettings:ExpirationMinutes"]).Returns("60");
+        _mockConfig.Setup(c => c["JwtSettings:Secret"])
+            .Returns("TestSecretKey1234567890jbljhbkhvbknhb435");
+        _mockConfig.Setup(c => c["JwtSettings:Issuer"])
+            .Returns("TestIssuer");
+        _mockConfig.Setup(c => c["JwtSettings:Audience"])
+            .Returns("TestAudience");
+        _mockConfig.Setup(c => c["JwtSettings:ExpirationMinutes"])
+            .Returns("60");
 
+        // Mock logger
         _mockLogger = new Mock<ILogger<AuthService>>();
 
+        // Create AuthService instance
         _authService = new AuthService(_context, _mockConfig.Object, _mockLogger.Object);
+
+        await Task.CompletedTask;
     }
-    
-    public void Dispose()
+
+    public async Task DisposeAsync()
     {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
+        if (_context != null)
+        {
+            await _context.Database.EnsureDeletedAsync();
+            await _context.DisposeAsync();
+        }
     }
 
     [Fact]
@@ -62,41 +69,36 @@ public class AuthServiceTests
         var result = await _authService.RegisterAsync(registerDto);
 
         Assert.Equal("Registration successful!", result);
+
         var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == registerDto.Email);
         Assert.NotNull(user);
         Assert.Equal(registerDto.Username, user.Username);
         Assert.Equal(registerDto.Email, user.Email);
-        Dispose();
     }
-    
-    
+
     [Fact]
     public async Task RegisterAsync_ShouldThrowException_ForDuplicateEmail()
     {
-        var registerDtoNewUser = new RegisterDto
+        var registerDto = new RegisterDto
         {
             Username = "TestUser",
             Email = "test@example.com",
             Password = "Test@1234",
             Role = "Admin"
         };
-        
-        var registerDtoExistingUser = new RegisterDto
+
+        await _authService.RegisterAsync(registerDto);
+
+        var duplicateDto = new RegisterDto
         {
-            Username = "DuplicateUser",
+            Username = "OtherUser",
             Email = "test@example.com",
             Password = "Test@1234",
-            Role = "Admin"
+            Role = "User"
         };
 
-        await _authService.RegisterAsync(registerDtoNewUser);
-        
-        
-
-        var exception = await Assert.ThrowsAsync<Exception>(() => _authService.RegisterAsync(registerDtoExistingUser));
+        var exception = await Assert.ThrowsAsync<Exception>(() => _authService.RegisterAsync(duplicateDto));
         Assert.Equal("User with this email already exists.", exception.Message);
-        Dispose();
-
     }
 
     [Fact]
@@ -123,10 +125,8 @@ public class AuthServiceTests
         Assert.NotNull(token);
         Assert.IsType<string>(token);
         Assert.NotEmpty(token);
-        Dispose();
-
     }
-    
+
     [Fact]
     public async Task LoginAsync_ShouldThrowException_ForInvalidEmail()
     {
@@ -136,10 +136,8 @@ public class AuthServiceTests
             Password = "Test@1234"
         };
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _authService.LoginAsync(loginDto));
+        var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _authService.LoginAsync(loginDto));
         Assert.Equal("Invalid email or password.", exception.Message);
-        Dispose();
-
     }
 
     [Fact]
@@ -161,15 +159,7 @@ public class AuthServiceTests
             Password = "WrongPassword"
         };
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _authService.LoginAsync(loginDto));
+        var exception = await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _authService.LoginAsync(loginDto));
         Assert.Equal("Invalid email or password.", exception.Message);
-        Dispose();
-
     }
-    
-   
-
-
-
-
 }

@@ -43,30 +43,27 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
-        if (string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
-        {
-            return BadRequest(new { error = "Email and Password are required." });
-        }
-
         try
         {
             var token = await _authService.LoginAsync(dto);
             return Ok(new { token });
         }
-        catch (UnauthorizedAccessException)
-        {
-            return Unauthorized(new { error = "Invalid email or password." });
-        }
         catch (ArgumentException ex)
         {
+            _logger.LogWarning("Login failed due to invalid input: {Error}", ex.Message);
             return BadRequest(new { error = ex.Message });
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogWarning("Unauthorized login attempt: {Error}", ex.Message);
+            return Unauthorized(new { error = ex.Message });
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"An error occurred during login: {ex.Message}");
-
-            return StatusCode(StatusCodes.Status500InternalServerError, new { error = "An unexpected error occurred. Please try again later." });
+            _logger.LogError("An unexpected error occurred during login: {Error}", ex.Message);
+            return StatusCode(500, new { error = "An unexpected error occurred. Please try again later." });
         }
     }
+
 
 }

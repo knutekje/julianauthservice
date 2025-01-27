@@ -80,26 +80,32 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginDto dto)
     {
-       
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
-            if (user == null)
-            {
-                _logger.LogWarning("Login failed: User with email {Email} not found.", dto.Email);
-                throw new Exception("Invalid email or password.");
-            }
+        if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password))
+        {
+            _logger.LogWarning("Login failed: Email or password is missing.");
+            throw new ArgumentException("Email and password are required.");
+        }
 
-            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
-            {
-                _logger.LogWarning("Login failed: Invalid password for email {Email}.", dto.Email);
-                throw new Exception("Invalid email or password.");
-            }
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
+        if (user == null)
+        {
+            _logger.LogWarning("Login failed: User with email {Email} not found.", dto.Email);
+            throw new UnauthorizedAccessException("Invalid email or password.");
+        }
 
-            var token = GenerateJwt(user);
-            _logger.LogInformation("User {Username} logged in successfully.", user.Username);
+        var isPasswordValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+        if (!isPasswordValid)
+        {
+            _logger.LogWarning("Login failed: Invalid password for email {Email}.", dto.Email);
+            throw new UnauthorizedAccessException("Invalid email or password.");
+        }
 
-            return token;
-      
+        var token = GenerateJwt(user);
+        _logger.LogInformation("User {Username} logged in successfully.", user.Username);
+
+        return token;
     }
+
     private string GenerateJwt(User user)
     {
         var secret = _config["JwtSettings:Secret"];
