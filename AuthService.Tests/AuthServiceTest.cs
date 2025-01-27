@@ -19,14 +19,12 @@ public class AuthServiceTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        // Initialize InMemory database
         var options = new DbContextOptionsBuilder<AuthDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
         _context = new AuthDbContext(options);
 
-        // Mock configuration
         _mockConfig = new Mock<IConfiguration>();
         _mockConfig.Setup(c => c["JwtSettings:Secret"])
             .Returns("TestSecretKey1234567890jbljhbkhvbknhb435");
@@ -37,10 +35,8 @@ public class AuthServiceTests : IAsyncLifetime
         _mockConfig.Setup(c => c["JwtSettings:ExpirationMinutes"])
             .Returns("60");
 
-        // Mock logger
         _mockLogger = new Mock<ILogger<AuthService>>();
 
-        // Create AuthService instance
         _authService = new AuthService(_context, _mockConfig.Object, _mockLogger.Object);
 
         await Task.CompletedTask;
