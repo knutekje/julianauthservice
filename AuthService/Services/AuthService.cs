@@ -111,7 +111,19 @@ public class AuthService : IAuthService
         var secret = _config["JwtSettings:Secret"];
         var issuer = _config["JwtSettings:Issuer"];
         var audience = _config["JwtSettings:Audience"];
-        var expirationMinutes = int.Parse(_config["JwtSettings:ExpirationMinutes"]);
+        var expirationMinutes = _config["JwtSettings:ExpirationMinutes"];
+
+        _logger.LogDebug("JWT Config - Secret: {Secret}, Issuer: {Issuer}, Audience: {Audience}, Expiration: {Expiration}",
+            secret, issuer, audience, expirationMinutes);
+
+        if (string.IsNullOrWhiteSpace(secret))
+            throw new Exception("JWT Secret is not configured.");
+        if (string.IsNullOrWhiteSpace(issuer))
+            throw new Exception("JWT Issuer is not configured.");
+        if (string.IsNullOrWhiteSpace(audience))
+            throw new Exception("JWT Audience is not configured.");
+        if (!int.TryParse(expirationMinutes, out var expiration))
+            throw new Exception("JWT ExpirationMinutes is not configured or invalid.");
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -127,12 +139,13 @@ public class AuthService : IAuthService
             issuer: issuer,
             audience: audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expirationMinutes),
+            expires: DateTime.UtcNow.AddMinutes(expiration),
             signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
 
     
     private bool IsPasswordStrong(string password)
