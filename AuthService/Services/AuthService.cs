@@ -80,8 +80,7 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginDto dto)
     {
-        try
-        {
+       
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null)
             {
@@ -99,11 +98,7 @@ public class AuthService : IAuthService
             _logger.LogInformation("User {Username} logged in successfully.", user.Username);
 
             return token;
-        }
-        catch(Exception ex)
-        {
-            return "Login failed. " + ex.Message;
-        }
+      
     }
     private string GenerateJwt(User user)
     {
