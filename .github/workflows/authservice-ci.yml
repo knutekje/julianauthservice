@@ -26,7 +26,6 @@ jobs:
 
     - name: Run tests
       run: dotnet test
-      #run: dotnet test AuthService.Tests/AuthService.Tests.csproj --no-restore --verbosity normal
 
     - name: Build Docker image
       run: docker build -t knutekje/julianauthservice:latest -f ./Dockerfile .
@@ -37,4 +36,4 @@ jobs:
 
     - name: Push Docker image
       if: success()
-      run: docker push knutekje/authservice:latest
+      run: docker push knutekje/julianauthservice:latest
